@@ -1,6 +1,6 @@
 # Privacy Policy for Klipbod
 
-**Last Updated: [Insert Date, e.g., November 10, 2026]**
+**Last Updated: November 10, 2026**
 
 We take your privacy seriously. This Privacy Policy describes how **Klipbod** (the "Extension") handles your data. Because Klipbod is a local-only browser extension, your data belongs completely to you.
 
