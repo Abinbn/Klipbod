@@ -1,0 +1,16 @@
+/*
+ * The offscreen document is never displayed, but it still has to keep its
+ * editable element invisible without inline styles, which the extension's
+ * content security policy forbids.
+ */
+#clipboard-sink {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  resize: none;
+}

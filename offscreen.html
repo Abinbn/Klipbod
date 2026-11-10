@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+  Klipbod offscreen document. Never rendered, never focused: it exists only to
+  give the extension a page that can read the clipboard. See offscreen.js.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Klipbod clipboard reader</title>
+    <link rel="stylesheet" href="offscreen.css" />
+  </head>
+  <body>
+    <!--
+      The paste command needs a focused editable element. It stays off screen
+      and is emptied on every poll, and the paste handler prevents any actual
+      insertion, so no content is ever added to this page.
+    -->
+    <textarea
+      id="clipboard-sink"
+      aria-hidden="true"
+      tabindex="-1"
+      autocomplete="off"
+      spellcheck="false"
+    ></textarea>
+    <script type="module" src="offscreen.js"></script>
+  </body>
+</html>

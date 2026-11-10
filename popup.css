@@ -1,0 +1,718 @@
+/*
+ * Klipbod popup styles.
+ *
+ * Hand-written instead of Tailwind: the extension's content security policy
+ * forbids remote scripts, so the Tailwind CDN build cannot be used, and a
+ * compiled stylesheet is a lot of weight for a single popup. Light and dark
+ * themes follow the system setting, with a few explicit overrides for users
+ * who force colours.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f4f5f8;
+  --surface: #ffffff;
+  --surface-2: #f7f8fb;
+  --border: #e2e5ec;
+  --border-strong: #cfd4df;
+  --text: #171a21;
+  --text-muted: #5d6472;
+  --text-faint: #8b91a0;
+
+  --accent: #4f46e5;
+  --accent-strong: #4338ca;
+  --accent-soft: #eef0ff;
+  --accent-contrast: #ffffff;
+
+  --danger: #c02c2c;
+  --danger-strong: #a32424;
+  --danger-soft: #fdecec;
+  --success: #17804a;
+  --warning: #9a6400;
+  --warning-soft: #fff6e0;
+
+  --image-accent: #0f766e;
+  --image-soft: #e6f6f3;
+
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05), 0 1px 3px rgb(16 24 40 / 0.04);
+  --shadow-raised: 0 6px 18px rgb(16 24 40 / 0.1);
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 7px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161c;
+    --surface: #1b1e26;
+    --surface-2: #21242e;
+    --border: #2c303c;
+    --border-strong: #3a3f4d;
+    --text: #eef0f5;
+    --text-muted: #a7aebd;
+    --text-faint: #7d8496;
+
+    --accent: #8b8cf8;
+    --accent-strong: #a5a6ff;
+    --accent-soft: #262a44;
+    --accent-contrast: #12131a;
+
+    --danger: #ff8b8b;
+    --danger-strong: #ffa8a8;
+    --danger-soft: #35222a;
+    --success: #5fd39a;
+    --warning: #f0c060;
+    --warning-soft: #332a17;
+
+    --image-accent: #5ed3c4;
+    --image-soft: #14302e;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-raised: 0 8px 22px rgb(0 0 0 / 0.45);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base                                                                       */
+/* -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 380px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Header                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 13px 14px 11px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.brand__mark {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand__text {
+  min-width: 0;
+}
+
+.brand__name {
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.brand__status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 1px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.brand__status[data-state='active'] .status-dot {
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 18%, transparent);
+}
+
+.brand__status[data-state='stalled'] .status-dot,
+.brand__status[data-state='error'] .status-dot {
+  background: var(--warning);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 20%, transparent);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Buttons                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: none;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.button:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.button--primary {
+  flex: 1;
+  border-color: transparent;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.button--primary:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+}
+
+.button--primary[data-copied='true'] {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--success) 18%, var(--surface));
+  color: var(--success);
+}
+
+.button--danger {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  color: var(--danger);
+}
+
+.button--danger:hover {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  background: var(--danger-soft);
+}
+
+.button--solid-danger {
+  border-color: transparent;
+  background: var(--danger);
+  color: #fff;
+}
+
+.button--solid-danger:hover {
+  border-color: transparent;
+  background: var(--danger-strong);
+}
+
+.button--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.button--ghost:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.button--icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.button--quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-faint);
+}
+
+.button--quiet:hover {
+  border-color: transparent;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Inline confirmation for "Clear all"                                        */
+/* -------------------------------------------------------------------------- */
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border));
+  border-radius: var(--radius-md);
+  background: var(--danger-soft);
+}
+
+.confirm__text {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Usage meter                                                                */
+/* -------------------------------------------------------------------------- */
+
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.meter__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.meter__track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+  overflow: hidden;
+}
+
+.meter__bar {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 200ms ease, background-color 200ms ease;
+}
+
+.meter__bar[data-level='high'] {
+  background: var(--warning);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Main feed                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.main {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 470px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+}
+
+.main::-webkit-scrollbar {
+  width: 10px;
+}
+
+.main::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+  background-color: var(--border-strong);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--warning) 40%, var(--border));
+  border-radius: var(--radius-md);
+  background: var(--warning-soft);
+  color: var(--text);
+  font-size: 11.5px;
+}
+
+.notice .icon {
+  margin-top: 1px;
+  color: var(--warning);
+}
+
+.notice__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.notice__dismiss {
+  flex: none;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.notice__dismiss:hover {
+  color: var(--text);
+}
+
+/* Empty and loading states */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 30px 22px 34px;
+  text-align: center;
+}
+
+.state__art {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 2px;
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.state__title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.state__text {
+  max-width: 30ch;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2s;
+  }
+
+  .button,
+  .meter__bar {
+    transition: none;
+  }
+}
+
+/* Cards */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px 10px 10px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card--image {
+  border-left-color: var(--image-accent);
+}
+
+.card--leaving {
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.card--new {
+  animation: card-in 180ms ease-out;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--new,
+  .card--leaving {
+    animation: none;
+    transition: none;
+  }
+}
+
+.card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px 2px 5px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.card--image .badge {
+  background: var(--image-soft);
+  color: var(--image-accent);
+}
+
+.badge__icon {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.badge__icon-image,
+.card--image .badge__icon-text {
+  display: none;
+}
+
+.card--image .badge__icon-image {
+  display: inline;
+}
+
+.card__time {
+  color: var(--text-faint);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.card__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 10.2em;
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  cursor: text;
+  user-select: text;
+}
+
+.card__text[data-kind='code'] {
+  padding: 6px 7px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.card__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card__image {
+  display: block;
+  width: 100%;
+  max-height: 170px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background:
+    repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface) 0% 50%) 50% / 12px 12px;
+  object-fit: contain;
+}
+
+.card__caption {
+  color: var(--text-faint);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card__error {
+  color: var(--danger);
+  font-size: 11px;
+}
+
+/* Hidden helper used by the legacy copy fallback: it must be in the layout to
+   be selectable, but invisible and out of the way. */
+.offscreen-copy {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Footer                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 12px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-faint);
+  font-size: 10.5px;
+}
+
+.footer__sep {
+  opacity: 0.6;
+}
+
+/* Keep keyboard focus visible everywhere, including on the scroll container. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
